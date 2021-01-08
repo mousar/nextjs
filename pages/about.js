@@ -1,14 +1,20 @@
 import Link from 'next/link';
 import Layout from '../components/Layout';
 
-export default () => {
+const About = ({ user }) => {
+  const { name, avatar_url } = user;
   return (
-    <Layout title="About">
-      <Link href="/">
-        <a> Go to Home page</a>
-      </Link>
-      <p>Javascript programmer</p>
-      <img src="/static/js.png" alt="js logo" />
+    <Layout title="About me">
+      <p>{name}</p>
+      <img src={avatar_url} alt="my photo" />
     </Layout>
   );
 };
+
+About.getInitialProps = async (ctx) => {
+  const res = await fetch('https://api.github.com/users/mousar');
+  const json = await res.json();
+  return { user: json };
+};
+
+export default About;
